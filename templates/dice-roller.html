@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fantasy Dice Chamber</title>
+  <!-- Updated font selection for better readability -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&display=swap">  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+</head>
+<body>
+  <div class="backdrop"></div>
+  
+  <!-- GM Password Modal -->
+  <div id="gm-modal-overlay" class="modal-overlay">
+    <div class="gm-password-modal">
+      <h3>Game Master Login</h3>
+      <p>Enter your password to access GM mode and hidden rolls.</p>
+      <input type="password" id="gm-password" class="password-input" placeholder="Enter password" autocomplete="off">
+      <p id="password-error" class="password-error">Incorrect password. Please try again.</p>
+      <div class="modal-buttons">
+        <button onclick="closeGMModal()" class="modal-button cancel-btn">Cancel</button>
+        <button onclick="verifyGMPassword()" class="modal-button submit-btn">Login</button>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container">
+    <header>
+      <h1><i class="fas fa-dice-d20"></i> Fantasy Dice Chamber</h1>
+      <div class="controls">
+        <div class="game-selector">
+          <button class="theme-btn dnd" onclick="setTheme('dnd')">D&D</button>
+          <button class="theme-btn warhammer active" onclick="setTheme('warhammer')">Warhammer</button>
+        </div>
+        <div class="mode-selector">
+          <button id="gm-mode-btn" onclick="toggleGMMode()"><i class="fas fa-user-shield"></i> GM Mode</button>
+        </div>
+      </div>
+    </header>
+    
+    <div class="character-section">
+      <label for="character-name">Your Character:</label>
+      <input type="text" id="character-name" placeholder="Enter character name">
+    </div>
+    
+    <div class="dice-section">
+      <div class="basic-dice">
+        <button class="dice-btn d4" onclick="rollDice('d4')" data-tooltip="4-sided die">d4</button>
+        <button class="dice-btn d6" onclick="rollDice('d6')" data-tooltip="6-sided die">d6</button>
+        <button class="dice-btn d8" onclick="rollDice('d8')" data-tooltip="8-sided die">d8</button>
+        <button class="dice-btn d10" onclick="rollDice('d10')" data-tooltip="10-sided die">d10</button>
+        <button class="dice-btn d12" onclick="rollDice('d12')" data-tooltip="12-sided die">d12</button>
+        <button class="dice-btn d20" onclick="rollDice('d20')" data-tooltip="20-sided die">d20</button>
+        <button class="dice-btn d100" onclick="rollDice('d100')" data-tooltip="Percentile die (d100)">d100</button>
+      </div>
+    </div>
+    
+    <div class="common-rolls">
+      <div id="dnd-rolls" class="roll-set">
+        <h3><i class="fas fa-dragon"></i> Common D&D Rolls</h3>
+        <button onclick="rollPreset('attack')">Attack Roll (d20)</button>
+        <button onclick="rollPreset('damage')">Damage (2d6)</button>
+        <button onclick="rollPreset('saving')">Saving Throw (d20)</button>
+        <button onclick="rollPreset('skill')">Skill Check (d20)</button>
+        <button onclick="rollPreset('initiative')">Initiative (d20)</button>
+      </div>
+      
+      <div id="warhammer-rolls" class="roll-set active">
+        <h3><i class="fas fa-hammer"></i> Warhammer Tests</h3>
+        <button onclick="rollPreset('characteristics')">Characteristics Test (d100)</button>
+        <button onclick="rollPreset('hitloc')">Hit Location (d10)</button>
+        <button onclick="rollPreset('wound')">Wound Roll (d10)</button>
+        <button onclick="rollPreset('damage')">Damage (1d10)</button>
+        <button onclick="rollPreset('casting')">Casting Roll (2d10)</button>
+      </div>
+    </div>
+    
+    <div class="dice-table">
+      <div id="dice-container" class="dice-container"></div>
+    </div>
+    
+    <div class="gm-controls">
+      <h3><i class="fas fa-user-shield"></i> GM Controls</h3>
+      <div class="gm-options">
+        <label class="switch">
+          <input type="checkbox" id="hidden-roll-toggle">
+          <span class="slider round"></span>
+          <span class="switch-label">Hidden Roll</span>
+        </label>
+        <button id="gm-roll-btn" class="gm-roll-btn" onclick="rollGMDice()">
+          <i class="fas fa-dice"></i> GM Roll
+        </button>
+      </div>
+    </div>
+    
+    <div class="results-section">
+      <div class="results-header">
+        <h2 id="results-title">Results</h2>
+        <button id="clear-history" onclick="clearHistory()"><i class="fas fa-trash-alt"></i> Clear</button>
+      </div>
+      <div id="results" class="result-reveal"></div>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/dice.js') }}"></script>
+</body>
+</html>
