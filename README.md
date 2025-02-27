@@ -85,7 +85,7 @@ A real-time virtual dice roller for tabletop RPGs, supporting both Dungeons & Dr
 - **Deployment**: Docker
 
 ## Project Structure
-
+```
 fantasy-dice-chamber/
 ├── app.py                  # Flask server and Socket.IO handlers
 ├── requirements.txt        # Python dependencies
@@ -102,7 +102,7 @@ fantasy-dice-chamber/
 └── templates/              # HTML templates
     ├── dice-roller.html    # Main application page
     └── index.html          # Landing page
-
+```
 ## Configuration
 
 ### GM Password
