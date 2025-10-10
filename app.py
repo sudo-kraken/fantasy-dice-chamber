@@ -1,8 +1,9 @@
-from flask import Flask, render_template, request, jsonify
-from flask_socketio import SocketIO, emit, join_room
 import os
 import random
 from datetime import datetime
+
+from flask import Flask, jsonify, render_template, request
+from flask_socketio import SocketIO, emit, join_room
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "secret!")

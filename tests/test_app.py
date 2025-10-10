@@ -1,5 +1,6 @@
 import pytest
 from flask import json
+
 from app import app, socketio
 
 
@@ -13,7 +14,8 @@ def client():
 @pytest.fixture(autouse=True)
 def clear_histories():
     # Ensure per-test isolation of in-memory histories
-    from app import roll_history, gm_roll_history
+    from app import gm_roll_history, roll_history
+
     roll_history.clear()
     gm_roll_history.clear()
     yield
