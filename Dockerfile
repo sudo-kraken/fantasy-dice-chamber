@@ -1,18 +1,20 @@
-# Use an official Python runtime as a parent image
-FROM python:3.10-slim
+FROM ghcr.io/astral-sh/uv:0.9-python3.13-bookworm-slim@sha256:bf39f30fb4598ceff268ef845db12d8ea373405b4fbe99056dd198dcfc7c61af
 
-# Set the working directory in the container
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
 WORKDIR /app
 
-# Copy the requirements file and install dependencies
-COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
+COPY pyproject.toml uv.lock ./
 
-# Copy the rest of the application code
+RUN uv sync --frozen --no-dev --no-install-project
+
 COPY . .
 
-# Expose the port that the app runs on
+RUN adduser --disabled-password --gecos "" appuser \
+    && chown -R appuser:appuser /app
+USER appuser
+
 EXPOSE 5000
 
-# Run the application with gunicorn for production
-CMD ["gunicorn", "--worker-class", "eventlet", "-w", "1", "--bind", "0.0.0.0:5000", "app:app"]
+CMD ["uv", "run", "--no-dev", "python", "-m", "app"]

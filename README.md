@@ -21,47 +21,142 @@ A real-time virtual dice roller for tabletop RPGs, supporting both Dungeons & Dr
 - **Character Persistence**: Saves character names across sessions
 - **Roll History**: Track all dice results with timestamps
 
-## Installation
+## Requirements
 
-### Prerequisites
-- Python 3.10 or higher
-- pip (Python package manager)
+- Python 3.13 or higher recommended
+- [uv](https://github.com/astral-sh/uv) for dependency and venv management
+- Docker optional for containerised runs
 
-### Local Setup
+> This project uses `pyproject.toml` and `uv.lock`. You do not need a `requirements.txt`. Although one is included.
 
-1. Clone the repository:
-    ```sh
-    git clone https://github.com/yourusername/fantasy-dice-chamber.git cd fantasy-dice-chamber
-    ```
-2. Install dependencies:
-    ```sh
-    pip install -r requirements.txt
-    ```
-3. Run the application:
-    ```py
-    python app.py
-    ```
-4. Open your browser and navigate to:
-    `http://localhost:5000`
+## Quick start with uv
 
-### Docker Deployment
+1. Install dependencies and set up the virtual environment:
+   ```bash
+     uv sync --extra dev
+   ```
 
-1. Build the Docker image:
-    ```sh
-    podman build -t fantasy-dice-chamber .
-    ```
-2. Run the container:
-    ```sh
-    docker run -p 5000:5000 fantasy-dice-chamber
-    ```
-3. Open your browser and navigate to:
-    `http://localhost:5000`
+2. Run the application:
+   ```bash
+   uv run python -m app
+   ```
+   The server listens on `0.0.0.0:5000` by default. Visit http://localhost:5000.
 
-## Usage Guide
+3. Run the tests:
+   ```bash
+   uv run pytest
+   ```
+   With coverage:
+   ```bash
+   uv run pytest --cov --cov-report=term-missing
+   ```
 
-### Basic Dice Rolling
-- Click on any dice button (d4, d6, d8, etc.) to roll that type of die
-- Results appear in the table area and are recorded in the history
+### Useful uv commands
+
+- Update the lock after changing dependencies:
+  ```bash
+  uv lock
+  ```
+- If an external system insists on a requirements file, export from the lock:
+  ```bash
+  uv export --frozen --no-dev --format requirements-txt -o requirements.txt
+  ```
+
+## Docker
+
+The included `Dockerfile` uses the official uv image and runs the app with Flask-SocketIO on eventlet.
+
+Run:
+```bash
+docker pull ghcr.io/sudo-kraken/fantasy-dice-chamber:latest
+docker run -p 5000:5000 ghcr.io/sudo-kraken/fantasy-dice-chamber:latest
+```
+
+## Development container
+
+If you open the repository in a Dev Container, the environment will run `uv sync --extra dev` on create. Inside the container:
+
+```bash
+uv run python -m app
+uv run pytest
+```
+
+The container forwards port 5000 by default.
+
+## Configuration
+
+### GM password
+
+Set the GM password via the `GM_PASSWORD` environment variable. If not set, the default is `Password`.
+
+Examples:
+
+Local with uv:
+```bash
+export GM_PASSWORD="changeme"
+uv run python -m app
+```
+
+Docker:
+```bash
+docker run -p 5000:5000 -e GM_PASSWORD="changeme" ghcr.io/sudo-kraken/fantasy-dice-chamber:latest
+```
+
+Docker Compose:
+```yaml
+services:
+  app:
+    image: ghcr.io/sudo-kraken/fantasy-dice-chamber:latest
+    ports:
+      - "5000:5000"
+    environment:
+      GM_PASSWORD: ${GM_PASSWORD:?set_in_dotenv}
+```
+
+Dev Container:
+```json
+"containerEnv": {
+  "GM_PASSWORD": "changeme",
+  "HOST": "0.0.0.0",
+  "PORT": "5000"
+}
+```
+
+Kubernetes Secret:
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: dice-secrets
+type: Opaque
+stringData:
+  GM_PASSWORD: changeme
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dice
+spec:
+  template:
+    spec:
+      containers:
+        - name: app
+          image: ghcr.io/sudo-kraken/fantasy-dice-chamber:latest
+          envFrom:
+            - secretRef:
+                name: dice-secrets
+          ports:
+            - containerPort: 5000
+```
+
+### Host and port
+You can override the host, port, and debug flag via environment variables:
+```bash
+export HOST=0.0.0.0
+export PORT=5000
+export FLASK_DEBUG=1
+uv run python -m app
+```
 
 ### Game Presets
 - Select your preferred theme (D&D or Warhammer) using the buttons in the header
@@ -73,43 +168,42 @@ A real-time virtual dice roller for tabletop RPGs, supporting both Dungeons & Dr
 
 ### GM Mode
 1. Click the "GM Mode" button
-2. Enter the GM password (default: `Password`)
+2. Enter the GM password (default: `Password`, or your `GM_PASSWORD` value)
 3. Use the hidden roll toggle to make rolls that only the GM can see
 4. Click the "GM Roll" button to roll selected dice
 
 ## Technology Stack
 
-- **Backend**: Flask, Flask-SocketIO, Python
-- **Frontend**: HTML5, CSS3, JavaScript
-- **Communication**: Socket.IO for real-time updates
-- **Deployment**: Docker
+- Backend: Flask, Flask-SocketIO, Python
+- Frontend: HTML5, CSS, JavaScript
+- Real-time transport: Socket.IO over eventlet
+- Packaging and tooling: uv, pytest, pytest-cov, Ruff
+- Container: Docker
 
 ## Project Structure
 ```
 fantasy-dice-chamber/
 ├── app.py                  # Flask server and Socket.IO handlers
-├── requirements.txt        # Python dependencies
-├── Dockerfile              # Docker configuration
-├── static/                 # Static assets
+├── pyproject.toml          # Project metadata and dependencies
+├── uv.lock                 # Resolved, pinned dependency lockfile
+├── Dockerfile              # Container build using uv
+├── tests/
+│   └── test_app.py         # Pytest test suite
+├── static/
 │   ├── css/
-│   │   └── styles.css      # Application styling
+│   │   └── styles.css
 │   ├── images/
-│   │   ├── felt.jpg        # Dice table background
-│   │   └── parchment.jpg   # Page background
+│   │   ├── felt.jpg
+│   │   └── parchment.jpg
 │   └── js/
-│       ├── dice.js         # Dice animation and handling
-│       └── main.js         # Main application logic
-└── templates/              # HTML templates
-    ├── dice-roller.html    # Main application page
-    └── index.html          # Landing page
+│       ├── dice.js
+│       └── main.js
+├── templates/
+│   ├── dice-roller.html
+│   └── index.html
+└── extras/
+    └── preview.gif
 ```
-## Configuration
-
-### GM Password
-The default GM password is `Password`. To change it, modify the `correct_password` variable in `app.py`.
-
-### Server Port
-By default, the application runs on port 5000 in development mode and port 5000 when using Docker. To change the port, modify the `Dockerfile` or the `app.py` file's port configuration.
 
 ---
 
