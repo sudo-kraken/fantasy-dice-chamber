@@ -16,7 +16,7 @@
     "github>sudo-kraken/fantasy-dice-chamber//.github/renovate/docker.json5",
     "github>sudo-kraken/fantasy-dice-chamber//.github/renovate/labels.json5",
     "github>sudo-kraken/fantasy-dice-chamber//.github/renovate/python.json5",
-    "github>sudo-kraken/fantasy-dice-chamber//.github/renovate/semantic_commits.json5",
+    "github>sudo-kraken/fantasy-dice-chamber//.github/renovate/semanticCommits.json5",
   ],
   dependencyDashboardTitle: "Renovate Dashboard 🤖",
   suppressNotifications: ["prEditedNotification", "prIgnoreNotification"],
