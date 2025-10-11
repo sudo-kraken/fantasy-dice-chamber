@@ -32,11 +32,4 @@
     automerge: true,
     branchTopic: "lock-file-maintenance",
   },
-
-  packageRules: [
-    {
-      matchManagers: ["github-actions"],
-      minimumReleaseAge: null,
-    },
-  ],
 }
