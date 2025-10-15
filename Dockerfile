@@ -26,4 +26,4 @@ EXPOSE 5000
 HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
   CMD curl -fsS "http://127.0.0.1:${PORT}/health" || exit 1
 
-CMD ["sh", "-c", "uv run gunicorn -k eventlet -w ${WEB_CONCURRENCY:-2} -b 0.0.0.0:${PORT:-5000} app.wsgi:app"]
+CMD ["sh", "-c", "uv run gunicorn --preload -k eventlet -w ${WEB_CONCURRENCY:-2} -b 0.0.0.0:${PORT:-5000} app.wsgi:app"]
