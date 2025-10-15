@@ -78,8 +78,12 @@ def test_socketio_roll_d100_shows_100_when_00(monkeypatch):
     def fake_randint(_a, _b):
         return next(seq)
 
-    # Patch the randint used inside the app module
-    monkeypatch.setattr("app.random.randint", fake_randint)
+    # Patch the randint used inside the application module directly by
+    # importing the module object and patching its random.randint.
+    import importlib
+
+    mod = importlib.import_module("app.app")
+    monkeypatch.setattr(mod.random, "randint", fake_randint)
 
     test_client = socketio.test_client(app)
     test_client.emit("roll_dice", {"dice_type": "d100", "character": "Tester"})
@@ -94,8 +98,11 @@ def test_socketio_roll_d100_shows_100_when_00(monkeypatch):
 
 
 def test_socketio_roll_invalid_dice_falls_back_to_d6(monkeypatch):
-    # Make any randint call deterministic
-    monkeypatch.setattr("app.random.randint", lambda a, b: 3)
+    # Make any randint call deterministic by patching the app module RNG
+    import importlib
+
+    mod = importlib.import_module("app.app")
+    monkeypatch.setattr(mod.random, "randint", lambda a, b: 3)
     test_client = socketio.test_client(app)
     test_client.emit("roll_dice", {"dice_type": "not_a_die"})
     received = test_client.get_received()

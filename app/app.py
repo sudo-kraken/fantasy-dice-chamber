@@ -1,6 +1,5 @@
 import os
 import random
-import sys
 from datetime import datetime
 
 from flask import Flask, jsonify, render_template, request
@@ -13,13 +12,6 @@ app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "secret!")
 GM_PASSWORD = os.environ.get("GM_PASSWORD", "Password")
 
 socketio = SocketIO(app, async_mode="eventlet")
-
-try:
-    pkg = sys.modules.get("app")
-    if pkg is not None:
-        pkg.random = random
-except Exception:
-    pass
 
 # Define roll history storage
 roll_history = []  # Regular roll history
