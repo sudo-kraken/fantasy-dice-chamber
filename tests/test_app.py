@@ -1,7 +1,7 @@
 import pytest
 from flask import json
 
-from app import app, socketio
+from app.app import app, socketio
 
 
 @pytest.fixture
@@ -14,7 +14,7 @@ def client():
 @pytest.fixture(autouse=True)
 def clear_histories():
     # Ensure per-test isolation of in-memory histories
-    from app import gm_roll_history, roll_history
+    from app.app import gm_roll_history, roll_history
 
     roll_history.clear()
     gm_roll_history.clear()
@@ -28,6 +28,14 @@ def test_index_route(client):
     assert resp.status_code == 200
     # if templates exist, we expect html in the response
     assert b"<html" in resp.data or b"<!doctype html" in resp.data.lower()
+
+
+def test_health_endpoint(client):
+    """Health endpoint should return a small JSON payload indicating liveness."""
+    resp = client.get("/health")
+    assert resp.status_code == 200
+    data = json.loads(resp.data)
+    assert data.get("ok") is True
 
 
 def test_dice_roller_route(client):

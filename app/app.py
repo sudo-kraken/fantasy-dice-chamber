@@ -1,5 +1,6 @@
 import os
 import random
+import sys
 from datetime import datetime
 
 from flask import Flask, jsonify, render_template, request
@@ -12,6 +13,13 @@ app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "secret!")
 GM_PASSWORD = os.environ.get("GM_PASSWORD", "Password")
 
 socketio = SocketIO(app, async_mode="eventlet")
+
+try:
+    pkg = sys.modules.get("app")
+    if pkg is not None:
+        pkg.random = random
+except Exception:
+    pass
 
 # Define roll history storage
 roll_history = []  # Regular roll history
@@ -36,6 +44,15 @@ def gm_verify():
     if password == GM_PASSWORD:
         return jsonify({"success": True})
     return jsonify({"success": False})
+
+
+@app.route("/health")
+def health():
+    """Simple health endpoint used by the Docker HEALTHCHECK and monitoring.
+
+    Returns JSON {"ok": True} with HTTP 200 when the app is up.
+    """
+    return jsonify({"ok": True}), 200
 
 
 @socketio.on("connect")

@@ -13,7 +13,7 @@ Users can roll a variety of dice in a shared room and see results in real time. 
 
 ## Architecture at a glance
 
-- Flask app with Socket.IO server and `app:app` WSGI target
+- Flask app with Socket.IO server and `app.app:app` WSGI target
 - eventlet async mode for WebSockets
 - Health endpoint `GET /health`
 
@@ -39,6 +39,11 @@ Local development with uv
 ```bash
 uv sync --all-extras
 uv run python -m app
+
+# Production (Gunicorn)
+```bash
+uv run gunicorn -k eventlet -w 2 -b 0.0.0.0:5000 app.app:app
+```
 ```
 
 ## Docker
