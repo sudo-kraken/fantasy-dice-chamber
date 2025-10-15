@@ -42,7 +42,7 @@ uv run python -m app
 
 # Production (Gunicorn)
 ```bash
-uv run gunicorn -k eventlet -w 2 -b 0.0.0.0:5000 app.app:app
+uv run gunicorn -k eventlet -w 1 -b 0.0.0.0:5000 app.app:app
 ```
 ```
 
