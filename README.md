@@ -1,6 +1,22 @@
-# Fantasy Dice Chamber
+<div align="center">
+<img src="https://raw.githubusercontent.com/sudo-kraken//fantasy-dice-chamber/main/docs/assets/logo.png" align="center" width="144px" height="144px"/>
 
-A real-time virtual dice roller for tabletop RPGs using Flask-SocketIO with eventlet. Built with uv and designed for local or containerised runs.
+### Fantasy Dice Chamber
+
+_A real-time virtual dice roller for tabletop RPGs using Flask-SocketIO with eventlet. Built with uv and designed for local or containerised runs._
+
+</div>
+
+<div align="center">
+
+[![Docker](https://img.shields.io/github/v/tag/sudo-kraken/fantasy-dice-chamber?label=docker&logo=docker&style=for-the-badge)](https://github.com/sudo-kraken//fantasy-dice-chamber/pkgs/container//fantasy-dice-chamber) [![Python](https://img.shields.io/python/required-version-toml?tomlFilePath=https%3A%2F%2Fraw.githubusercontent.com%2Fsudo-kraken%2F/fantasy-dice-chamber%2Fmain%2Fpyproject.toml&logo=python&logoColor=yellow&color=3776AB&style=for-the-badge)](https://github.com/sudo-kraken/fantasy-dice-chamber/blob/main/pyproject.toml)
+</div>
+
+<div align="center">
+
+[![OpenSSF Scorecard](https://img.shields.io/ossf-scorecard/github.com/sudo-kraken/fantasy-dice-chamber?label=openssf%20scorecard&style=for-the-badge)](https://scorecard.dev/viewer/?uri=github.com/sudo-kraken/fantasy-dice-chamber)
+
+</div>
 
 ## Demo
 
