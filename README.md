@@ -4,7 +4,6 @@
 ### Fantasy Dice Chamber
 
 _A real-time virtual dice roller for tabletop RPGs using Flask-SocketIO with eventlet. Built with uv and designed for local or containerised runs._
-
 </div>
 
 <div align="center">
@@ -20,8 +19,29 @@ _A real-time virtual dice roller for tabletop RPGs using Flask-SocketIO with eve
 
 ## Demo
 
-![Demo](./extras/preview.gif)
+![Demo](./extras/preview.gif)  
 *Animation shows dice rolling with real-time updates across connected players*
+
+## Contents
+
+- [Demo](#demo)
+- [Overview](#overview)
+- [Architecture at a glance](#architecture-at-a-glance)
+- [Features](#features)
+- [Prerequisites](#prerequisites)
+- [Quick start](#quick-start)
+- [Docker](#docker)
+- [Configuration](#configuration)
+- [Health](#health)
+- [Endpoint](#endpoint)
+- [Production notes](#production-notes)
+- [Development](#development)
+- [Troubleshooting](#troubleshooting)
+- [Licence](#licence)
+- [Security](#security)
+- [Contributing](#contributing)
+- [Support](#support)
+- [Disclaimer](#disclaimer)
 
 ## Overview
 
@@ -46,7 +66,7 @@ Users can roll a variety of dice in a shared room and see results in real time. 
 ## Prerequisites
 
 - [Docker](https://www.docker.com/)
-- (Alternatively) [uv](https://docs.astral.sh/uv/) and Python 3.13 for local development
+- Alternatively [uv](https://docs.astral.sh/uv/) and Python 3.13 for local development
 
 ## Quick start
 
@@ -55,11 +75,12 @@ Local development with uv
 ```bash
 uv sync --all-extras
 uv run python -m app
+```
 
-# Production (Gunicorn)
+Production with Gunicorn
+
 ```bash
 uv run gunicorn -k eventlet -w 1 -b 0.0.0.0:5000 app.wsgi:app
-```
 ```
 
 ## Docker
@@ -92,10 +113,16 @@ GM_PASSWORD=replace-me
 
 - `GET /health` returns `{ "ok": true }`
 
+## Endpoint
+
+- `GET /health` for liveness checks
+
 ## Production notes
 
 - Use the eventlet worker for WebSocket support when running under Gunicorn.
 - If deploying behind a reverse proxy, enable ProxyFix or equivalent so that remote IPs and scheme are preserved.
+- Ensure WebSocket upgrade headers are passed through by your proxy.
+- Set a strong `GM_PASSWORD` if enabling GM features.
 
 ## Development
 
@@ -109,21 +136,25 @@ uv run pytest --cov
 
 - If WebSockets do not upgrade, verify you are using the eventlet worker and that your proxy allows WebSocket upgrade headers.
 - For cross origin issues, review any CORS settings you have applied.
+- If the UI does not connect, check browser console logs and server logs for Socket.IO connection errors.
 
 ## Licence
-See [LICENSE](LICENSE)
+
+This project is licensed under the MIT Licence. See the [LICENCE](LICENCE) file for details.
 
 ## Security
-See [SECURITY.md](SECURITY.md)
+
+If you discover a security issue, please review and follow the guidance in [SECURITY.md](SECURITY.md), or open a private security-focused issue with minimal details and request a secure contact channel.
 
 ## Contributing
+
 Feel free to open issues or submit pull requests if you have suggestions or improvements.
 See [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ## Support
-Open an [issue](/../../issues)
 
----
+Open an [issue](/../../issues) with as much detail as possible, including your environment details and relevant logs or output.
 
-*Fantasy Dice Chamber is not affiliated with Games Workshop, Wizards of the Coast, or any official Warhammer or Dungeons & Dragons product.*
+## Disclaimer
 
+This tool provides a real-time dice rolling service intended for casual use. Always test changes in a non-production environment and secure your deployment appropriately if exposing it to the internet.
