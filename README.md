@@ -1,5 +1,5 @@
 <div align="center">
-<img src="https://raw.githubusercontent.com/sudo-kraken//fantasy-dice-chamber/main/docs/assets/logo.png" align="center" width="144px" height="144px"/>
+<img src="docs/assets/logo.png" align="center" width="144px" height="144px"/>
 
 ### Fantasy Dice Chamber
 
