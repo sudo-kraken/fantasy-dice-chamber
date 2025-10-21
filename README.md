@@ -65,7 +65,7 @@ Users can roll a variety of dice in a shared room and see results in real time. 
 
 ## Prerequisites
 
-- [Docker](https://www.docker.com/)
+- [Docker](https://www.docker.com/) / [Kubernetes](https://kubernetes.io/)
 - Alternatively [uv](https://docs.astral.sh/uv/) and Python 3.13 for local development
 
 ## Quick start
@@ -92,6 +92,15 @@ docker pull ghcr.io/sudo-kraken/fantasy-dice-chamber:latest
 docker run --rm -p 5000:5000 \
   -e PORT=5000 \
   ghcr.io/sudo-kraken/fantasy-dice-chamber:latest
+```
+
+## Kubernetes (Helm)
+
+You can deploy the app on Kubernetes using the published Helm chart:
+
+```bash
+helm install fantasy-dice-chamber oci://ghcr.io/sudo-kraken/helm-charts/fantasy-dice-chamber \
+  --namespace fantasy-dice-chamber --create-namespace
 ```
 
 ## Configuration
