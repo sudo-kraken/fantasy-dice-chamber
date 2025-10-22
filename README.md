@@ -8,7 +8,7 @@ _A real-time virtual dice roller for tabletop RPGs using Flask-SocketIO with eve
 
 <div align="center">
 
-[![Docker](https://img.shields.io/github/v/tag/sudo-kraken/fantasy-dice-chamber?label=docker&logo=docker&style=for-the-badge)](https://github.com/sudo-kraken//fantasy-dice-chamber/pkgs/container//fantasy-dice-chamber) [![Python](https://img.shields.io/python/required-version-toml?tomlFilePath=https%3A%2F%2Fraw.githubusercontent.com%2Fsudo-kraken%2F/fantasy-dice-chamber%2Fmain%2Fpyproject.toml&logo=python&logoColor=yellow&color=3776AB&style=for-the-badge)](https://github.com/sudo-kraken/fantasy-dice-chamber/blob/main/pyproject.toml)
+[![Docker](https://img.shields.io/github/v/tag/sudo-kraken/fantasy-dice-chamber?label=docker&logo=docker&style=for-the-badge)](https://github.com/sudo-kraken//fantasy-dice-chamber/pkgs/container//fantasy-dice-chamber) [![Helm](https://img.shields.io/badge/dynamic/yaml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fsudo-kraken%2Fhelm-charts%2Frefs%2Fheads%2Fmain%2Fcharts%2Ffantasy-dice-chamber%2FChart.yaml&query=%24.version&label=&logo=helm&style=for-the-badge&logoColor=0F1487&color=white)](https://github.com/sudo-kraken/helm-charts/tree/main/charts/fantasy-dice-chamber) [![Python](https://img.shields.io/python/required-version-toml?tomlFilePath=https%3A%2F%2Fraw.githubusercontent.com%2Fsudo-kraken%2F/fantasy-dice-chamber%2Fmain%2Fpyproject.toml&logo=python&logoColor=yellow&color=3776AB&style=for-the-badge)](https://github.com/sudo-kraken/fantasy-dice-chamber/blob/main/pyproject.toml)
 </div>
 
 <div align="center">
